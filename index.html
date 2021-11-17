@@ -33,7 +33,7 @@
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
   <script>
-    var serviceWorkerVersion = '1626042499';
+    var serviceWorkerVersion = '1878228123';
     var scriptLoaded = false;
     function loadMainDartJs() {
       if (scriptLoaded) {
@@ -102,16 +102,9 @@
       return resp.publicKey.toString();
     }
 
-    window.isPhantomInstalled = function isPhantomInstalled() {
-        return window.solana && window.solana.isPhantom;
-    }
-
   var walletModule = {
-    connect : connect,
-    isPhantomInstalled : isPhantomInstalled,
-    disconnect : disconnect,
+    connect : connect
   };
-
   </script>
   <script src="main.dart.js" type="application/javascript"></script>
   <picture id="splash">
