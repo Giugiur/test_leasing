@@ -33,7 +33,7 @@
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
   <script>
-    var serviceWorkerVersion = '3268251305';
+    var serviceWorkerVersion = '2702238440';
     var scriptLoaded = false;
     function loadMainDartJs() {
       if (scriptLoaded) {
@@ -96,14 +96,48 @@
       loadMainDartJs();
     }
   </script>
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
   <script>
     window.connect = async function connect() {
       const resp = await window.solana.connect();
-      return resp.publicKey.toString();
+
+    var connection = new solanaWeb3.Connection(
+      solanaWeb3.clusterApiUrl('devnet'),
+      'confirmed',
+    );
+
+    // Generate a new random public key
+    var from = solanaWeb3.Keypair.generate();
+    var airdropSignature = await connection.requestAirdrop(
+      from.publicKey,
+      solanaWeb3.LAMPORTS_PER_SOL,
+    );
+    await connection.confirmTransaction(airdropSignature);
+
+    // Generate a new random public key
+    var to = solanaWeb3.Keypair.generate();
+
+    // Add transfer instruction to transaction
+    var transaction = new solanaWeb3.Transaction().add(
+      solanaWeb3.SystemProgram.transfer({
+        fromPubkey: from.publicKey,
+        toPubkey: to.publicKey,
+        lamports: solanaWeb3.LAMPORTS_PER_SOL / 100,
+      }),
+    );
+
+    // Sign transaction, broadcast, and confirm
+    var signature = await solanaWeb3.sendAndConfirmTransaction(
+      connection,
+      transaction,
+      [from],
+    );
+        console.log('SIGNATURE', signature);
+        return resp.publicKey.toString();
     }
 
     window.isPhantomInstalled = function isPhantomInstalled() {
-        return window.solana && window.solana.isPhantom;
+      return window.solana && window.solana.isPhantom;
     }
 
     window.disconnect = function disconnect() {
