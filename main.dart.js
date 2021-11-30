@@ -62620,7 +62620,7 @@ if(n!=="")s=n==="start"?C.a8:C.bW
 else s=C.b2
 n=T.bE(T.dn(L.b7(p.c,o,o,o,C.JY,s,o),o,1/0),30)
 r=p.e
-r=r!==""?T.bE(T.dn(K.aec(new L.l8("assets/images/"+r+".png")),25,25),25):M.bD(o,o,C.n,o,o,o,o,o,o,o,o,o,o,o)
+r=r!==""?T.bE(T.dn(K.aec(new L.l8("assets/images/"+r.toLowerCase()+".png")),25,25),25):M.bD(o,o,C.n,o,o,o,o,o,o,o,o,o,o,o)
 q=t.p
 return T.lj(H.a([n,T.bE(T.dG(H.a([r,T.bE(T.dn(L.b7(p.d,o,C.aG,o,K.N(b).G.c,s,o),o,1/0),75)],q),C.V,C.Z,C.a2),70)],q),C.V,C.Z,C.a2)}}
 X.u_.prototype={
