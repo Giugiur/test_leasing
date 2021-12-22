@@ -1,0 +1,31 @@
+{
+  "dependencies": {
+    "@project-serum/anchor": "^0.19.1-beta.1",
+    "@solana/spl-token": "^0.1.8"
+  },
+  "name": "solana_nft",
+  "description": "A new Flutter application.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Giugiur/leasing_protocol.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Giugiur/leasing_protocol/issues"
+  },
+  "homepage": "https://github.com/Giugiur/leasing_protocol#readme",
+  "devDependencies": {
+    "browserify": "^17.0.0",
+    "esmify": "^2.1.1"
+  }
+}
