@@ -1,6 +1,8 @@
-const { SystemProgram, Connection, clusterApiUrl, PublicKey, Keypair } = solanaWeb3,
-  { Provider, Program, setProvider } = web3,
+var publicKey = '';
+const { SystemProgram, Connection, clusterApiUrl, Keypair, LAMPORTS_PER_SOL, PublicKey } = solanaWeb3,
+  { Provider, Program, setProvider, BN } = web3,
   { Token, TOKEN_PROGRAM_ID } = splToken,
+  { Buffer } = buffer,
   idl = {
   "version": "0.1.0",
   "name": "star_atlas_lending",
@@ -838,18 +840,21 @@ const { SystemProgram, Connection, clusterApiUrl, PublicKey, Keypair } = solanaW
   opts = {
     preflightCommitment: "processed"
   },
-  // const programID = new PublicKey(idl.metadata.address);
-  programID = 'Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS',
+  connection = new Connection(network, opts.preflightCommitment),
+  programID = '3691iwYqSCkfAMgBc3SqJ7R5hz8CFDYWbCuKr1swqhGr', //TODO: Get the program ID from the IDL
   getProvider = () => {
-    const connection = new Connection(network, opts.preflightCommitment),
-    provider = new Provider(
+    const provider = new Provider(
       connection, window.solana, opts.preflightCommitment,
     );
     return provider;
+  },
+  setPublicKey = (key) => {
+    publicKey = key;
   };
 
 window.connect = async function connect() {
   const resp = await window.solana.connect();
+  setPublicKey(resp.publicKey.toString());
   return resp.publicKey.toString();
 }
 
@@ -862,41 +867,69 @@ window.disconnect = function disconnect() {
 }
 
 window.createListing = async function createListing(a) {
-  setProvider(Provider.env());
+  const decoded = bs58.decode('41vz4WHaQsPnyUTSGam8AhZqRph2cFPWTCm5j7Lgo63WG82TrknXpBKbJpioLSJP8ia8NridC5wEyZerAJdJtkLc'),//TODO: Remove this
+    wallet = Keypair.fromSecretKey(decoded);
   try {
     const provider = getProvider(),
-      program = new Program(idl, programID, provider);
-      console.log(program.provider);
-      const owner = Keypair.generate(),
-      authority = program.provider.wallet.payer,
+      program = new Program(idl, programID, provider),
+      jpSalListing = 'jpsal:listing', //TODO: get this from IDL->constants
       shipMint = await Token.createMint(
+        connection,
+        wallet,
+        wallet.publicKey,
+        null,
+        9,
+        TOKEN_PROGRAM_ID,
+      ),
+      atlasMint = await Token.createMint(
         program.provider.connection,
-        authority,
-        authority.publicKey,
+        wallet,
+        wallet.publicKey,
+        null,
+        8,
+        TOKEN_PROGRAM_ID
+      ),
+      collateralMint = await Token.createMint(
+        program.provider.connection,
+        wallet,
+        wallet.publicKey,
         null,
         0,
         TOKEN_PROGRAM_ID
       ),
-      [pubkey, bump] = await PublicKey.findProgramAddress(
-        [Buffer.from('jpsal:listing'), owner.publicKey.toBytes(), shipMint.publicKey.toBytes()],
+      shipAccount = await shipMint.createAssociatedTokenAccount(wallet.publicKey),
+      shipMintAddress = new PublicKey('267DbhCypYzvTqv72ZG5UKHeFu56qXFsuoz3rw832eC5'), //TODO: Get ship's mint address
+      atlasMintAddress = new PublicKey('ATLASXmbPQxBUYbxPsV97usA3fPQYEqzQBUHgiFCUsXx'),
+      feeDestination = await atlasMint.createAssociatedTokenAccount(wallet.publicKey),
+      [listingPubkey, listingBump] = await PublicKey.findProgramAddress(
+        [Buffer.from(jpSalListing), wallet.publicKey.toBytes(), shipMint.publicKey.toBytes()],
         program.programId
-      );
-      console.log(pubkey, bump);
-      // await program.rpc.createListing(
-    //   listingBump // ???
-    //   params, { // ??? 
-    //   accounts: {
-    //     owner: , // public key of the ship's owner
-    //     listing: , // address of the listing account ?
-    //     shipAccount: , // getAssociatedTokenAccount(mint) ?
-    //     shipMint: , // mint address of the ship
-    //     collateralMint: , // ATLAS mint
-    //     feeDestination: , // address of the ATLAS token account of the owner
-    //     feeMint: , // ATLAS mint address
-    //     tokenProgram: TOKEN_PROGRAM_ID, 
-    //     systemProgram: SystemProgram.programID,
-    //   },
-    //});
+      ),
+      params = {
+        feePerHour: new BN(10),
+        guild: null,
+        maxTermInHours: 5,
+        minCollateral: new BN(0),
+        requirePrepay: false
+      };
+      await new program.instruction.createListing(
+        listingBump,
+        params, {  
+        accounts: {
+          owner: wallet.publicKey,
+          listing: listingPubkey,
+          shipAccount: shipAccount,
+          shipMint: shipMint.publicKey,
+          collateralMint: collateralMint.publicKey,
+          feeDestination: feeDestination,
+          feeMint: atlasMint.publicKey,
+          tokenProgram: TOKEN_PROGRAM_ID, 
+          systemProgram: SystemProgram.programId,
+        },
+        signers: [wallet]
+      });
+      //getListing();
+      console.log();
   } catch (error) {
     console.log("Error while creating the listing", error)
   }
