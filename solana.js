@@ -867,7 +867,7 @@ window.disconnect = function disconnect() {
 }
 
 window.createListing = async function createListing(a) {
-  const decoded = bs58.decode('41vz4WHaQsPnyUTSGam8AhZqRph2cFPWTCm5j7Lgo63WG82TrknXpBKbJpioLSJP8ia8NridC5wEyZerAJdJtkLc'),//TODO: Remove this
+  const decoded = bs58.decode('asd'),//TODO: Remove this
     wallet = Keypair.fromSecretKey(decoded);
   try {
     const provider = getProvider(),
