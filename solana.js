@@ -1,6 +1,6 @@
 var publicKey = '';
 const { SystemProgram, Connection, clusterApiUrl, Keypair, LAMPORTS_PER_SOL, PublicKey } = solanaWeb3,
-  { Provider, Program, setProvider, BN } = web3,
+  { Provider, Program, BN } = web3,
   { Token, TOKEN_PROGRAM_ID } = splToken,
   { Buffer } = buffer,
   idl = {
@@ -866,9 +866,9 @@ window.disconnect = function disconnect() {
   window.solana.disconnect();
 }
 
-window.createListing = async function createListing(a) {
-  const decoded = bs58.decode('asd'),//TODO: Remove this
-    wallet = Keypair.fromSecretKey(decoded);
+window.createListing = async function createListing(maxHoursToLease, ratePerHour, collateralValue, listsToGuild, requirePrepayment, mint) {
+  const decoded = bs58.decode('secret key'),//TODO: Remove this
+    wallet = Keypair.fromSecretKey(decoded); //TODO: change to provider.wallet?
   try {
     const provider = getProvider(),
       program = new Program(idl, programID, provider),
@@ -898,7 +898,7 @@ window.createListing = async function createListing(a) {
         TOKEN_PROGRAM_ID
       ),
       shipAccount = await shipMint.createAssociatedTokenAccount(wallet.publicKey),
-      shipMintAddress = new PublicKey('267DbhCypYzvTqv72ZG5UKHeFu56qXFsuoz3rw832eC5'), //TODO: Get ship's mint address
+      shipMintAddress = new PublicKey(mint), //TODO: Get ship's mint address
       atlasMintAddress = new PublicKey('ATLASXmbPQxBUYbxPsV97usA3fPQYEqzQBUHgiFCUsXx'),
       feeDestination = await atlasMint.createAssociatedTokenAccount(wallet.publicKey),
       [listingPubkey, listingBump] = await PublicKey.findProgramAddress(
@@ -906,15 +906,15 @@ window.createListing = async function createListing(a) {
         program.programId
       ),
       params = {
-        feePerHour: new BN(10),
-        guild: null,
-        maxTermInHours: 5,
-        minCollateral: new BN(0),
-        requirePrepay: false
+        feePerHour: new BN(ratePerHour),
+        guild: listsToGuild,
+        maxTermInHours: maxHoursToLease,
+        minCollateral: new BN(collateralValue),
+        requirePrepay: requirePrepayment
       };
-      await new program.instruction.createListing(
+      await program.instruction.createListing(
         listingBump,
-        params, {  
+        params, {
         accounts: {
           owner: wallet.publicKey,
           listing: listingPubkey,
@@ -923,7 +923,7 @@ window.createListing = async function createListing(a) {
           collateralMint: collateralMint.publicKey,
           feeDestination: feeDestination,
           feeMint: atlasMint.publicKey,
-          tokenProgram: TOKEN_PROGRAM_ID, 
+          tokenProgram: TOKEN_PROGRAM_ID,
           systemProgram: SystemProgram.programId,
         },
         signers: [wallet]
