@@ -912,7 +912,7 @@ window.createListing = async function createListing(maxHoursToLease, ratePerHour
         minCollateral: new BN(collateralValue),
         requirePrepay: requirePrepayment
       };
-      await program.instruction.createListing(
+      await program.transaction.createListing(
         listingBump,
         params, {
         accounts: {
