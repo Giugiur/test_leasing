@@ -13,10 +13,14 @@ const RESOURCES = {
 "assets/assets/images/polis.png": "dc56f13fbef79cb348fc272b36c4e6d6",
 "assets/assets/images/usdc.png": "939964c3c006c80a6fc8c82372ce2c8e",
 "assets/FontManifest.json": "58268faefdf2444d42dfb0fd91285198",
-"assets/fonts/MaterialIcons-Regular.otf": "4e6447691c9509f7acdbf8a931a85ca1",
-"assets/NOTICES": "1ae431d8684ad66b73b3e38645782ef7",
+"assets/fonts/MaterialIcons-Regular.otf": "7e7a6cccddf6d7b20012a548461d5d81",
+"assets/NOTICES": "af88554dc3517d26e50731aebb233029",
 "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "6d342eb68f170c97609e9da345464e5e",
 "assets/packages/line_icons/lib/assets/fonts/LineIcons.ttf": "23621397bc1906a79180a918e98f35b2",
+"canvaskit/canvaskit.js": "c2b4e5f3d7a3d82aed024e7249a78487",
+"canvaskit/canvaskit.wasm": "4b83d89d9fecbea8ca46f2f760c5a9ba",
+"canvaskit/profiling/canvaskit.js": "ae2949af4efc61d28a4a80fffa1db900",
+"canvaskit/profiling/canvaskit.wasm": "95e736ab31147d1b2c7b25f11d4c32cd",
 "favicon.png": "fdee67b5d1de19d12cdb732edee627e0",
 "icons/android-icon-144x144.png": "f2ad0cd77dfc37f4971935fada0dfffb",
 "icons/android-icon-192x192.png": "8aa476bbe8821e346e56d3148053fa55",
@@ -53,10 +57,10 @@ const RESOURCES = {
 "icons/ms-icon-310x310.png": "8de111b458e21a0e97c9c61ccfa2cd31",
 "icons/ms-icon-70x70.png": "1d989d05d327af165e3aee3c119481d4",
 "idl/idl.json": "0c39e6364ced9a9bd5feb2ca0e84ae10",
-"index.html": "76e1eb6e1a69fee2f68d47e59c8aaf6b",
+"index.html": "eb6a6d97961d5b0b6e54a955121ee0b5",
 "/": "c999d5d845b65ad79a27a7faf25722f7",
 "main-packed.js": "8e19ab1e95777a22a2ee62c3e6193a12",
-"main.dart.js": "6ba1eb18a125cab598a97aae23223a6a",
+"main.dart.js": "897604701611690c8955101585ece42d",
 "main.js": "b90015878d972c798d3dcfce281ffb3f",
 "manifest.json": "1a5cb1a9af6547ef5ec7a0bfe4c76ef2",
 "node_modules/.bin/acorn": "28b14a698a8fe08edb4b85c99b1fe0dc",
@@ -10361,8 +10365,9 @@ const RESOURCES = {
 "splash/img/light-2x.png": "853c63ceb15b31f8b933e0d86ff5af7c",
 "splash/img/light-3x.png": "1bdac43d329117e1a4f78f25483cd3b2",
 "splash/img/light-4x.png": "3c3b36de37ddbce29d191cd21d9f57da",
-"splash/style.css": "41463376c54344137b5ba2f1cb2987e1",
-"version.json": "b64f77feb4d86858612615db0804e63a"
+"splash/splash.js": "c6a271349a0cd249bdb6d3c4d12f5dcf",
+"splash/style.css": "e02944354ef65f3884f4d9192521d289",
+"version.json": "c7a24e1c1b25e2c57f671d14c46cd573"
 };
 
 // The application shell files that are downloaded before a service worker can
